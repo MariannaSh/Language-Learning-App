@@ -1,0 +1,84 @@
+/* Podstawowe style */
+body {
+  font-family: Arial, sans-serif;
+  background-color: #f4f4f9;
+  margin: 0;
+  padding: 0;
+  text-align: center; /* Upraszcza wyrównanie */
+}
+
+/* Sekcje */
+.section {
+  display: none;
+  padding: 20px;
+  max-width: 600px;
+  margin: 0 auto;
+  background-color: white;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+/* Klasa do wyświetlania sekcji */
+.section:not(.hidden) {
+  display: block; /* Wyświetl sekcję, jeśli klasa hidden została usunięta */
+}
+
+/* Nagłówki */
+h1 {
+  color: #333;
+  margin-bottom: 20px; /* Dodaj odstęp */
+}
+
+/* Przyciski */
+button {
+  padding: 10px;
+  margin: 10px 0;
+  background-color: #007bff;
+  color: white;
+  border: none;
+  border-radius: 3px;
+  font-size: 16px;
+  cursor: pointer;
+}
+
+button:hover {
+  background-color: #0056b3; /* Przyciemnij przy najechaniu */
+}
+
+/* Formularze */
+input, select {
+  width: 90%; /* Prostsze niż 100% z ramkami */
+  padding: 10px;
+  margin: 10px auto;
+  border: 1px solid #ccc;
+  border-radius: 3px;
+}
+
+/* Linki */
+a {
+  color: #007bff;
+  text-decoration: none;
+}
+
+a:hover {
+  text-decoration: underline;
+}
+
+/* Prosta lista */
+ul {
+  list-style-type: none;
+  padding: 0;
+}
+
+li {
+  background-color: #f9f9f9;
+  padding: 10px;
+  margin: 5px 0;
+  border-radius: 3px;
+}
+
+/* Postęp */
+#progress {
+  margin: 20px 0;
+  font-weight: bold;
+}

@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nauka Języków Obcych</title>
+    <link rel="stylesheet" href="css/style.css">
+    <script src="js/index.js" defer></script>
+</head>
+    <body>
+
+        <!-- Sekcja powitalna -->
+        <div id="welcome-section" class="section">
+            <h1>Witaj w aplikacji do nauki języków obcych!</h1>
+            <button onclick="showLoginSection()">Zaloguj się</button>
+            <button onclick="showRegisterSection()">Zarejestruj się</button>
+        </div>
+
+        <!-- Sekcja logowania -->
+        <div id="login-section" class="section hidden">
+            <h2>Logowanie</h2>
+            <label for="login-username">Użytkownik:</label>
+            <input type="text" id="login-username" placeholder="Wpisz nazwę użytkownika"><br>
+            <label for="login-password">Hasło:</label>
+            <input type="password" id="login-password" placeholder="Wpisz hasło"><br>
+            <button onclick="loginUser()">Zaloguj</button>
+            <p><a href="#" onclick="showRegisterSection()">Nie masz konta? Zarejestruj się</a></p>
+        </div>
+
+        <!-- Sekcja rejestracji -->
+        <div id="register-section" class="section hidden">
+            <h2>Rejestracja</h2>
+            <label for="register-username">Nazwa użytkownika:</label>
+            <input type="text" id="register-username" placeholder="Wybierz nazwę użytkownika"><br>
+            <label for="register-password">Hasło:</label>
+            <input type="password" id="register-password" placeholder="Wybierz hasło"><br>
+            <button onclick="registerUser()">Zarejestruj</button>
+            <p><a href="#" onclick="showLoginSection()">Masz już konto? Zaloguj się</a></p>
+        </div>
+
+
+            
+        <!-- Sekcja główna -->
+        <div id="main-section" class="section hidden">
+            <h2>Co chcesz zrobić?</h2>
+            <button onclick="showLearningSection()">Rozpocznij naukę</button>
+            <button onclick="showDictionarySection()">Twój słownik</button>
+            <button onclick="logout()">Wyloguj się</button>
+            <div id="progress">
+                <h3>Twój postęp:</h3>
+                <p><span id="progress-percent">0</span>% ukończonych zadań</p>
+            </div>
+        </div>
+
+        <!-- Sekcja nauki -->
+        <div id="learning-section" class="section hidden">
+            <h2>Rozpocznij naukę</h2>
+            <label for="language">Wybierz język:</label>
+            <select id="language">
+                <option value="english">Angielski</option>
+                <option value="spanish">Hiszpański</option>
+                <option value="german">Niemiecki</option>
+            </select><br>
+            <label for="level">Wybierz poziom:</label>
+            <select id="level">
+                <option value="beginner">Początkujący</option>
+                <option value="intermediate">Średniozaawansowany</option>
+                <option value="advanced">Zaawansowany</option>
+            </select><br>
+            <button onclick="startLearning()">Rozpocznij</button>
+            <button onclick="showMainSection()">Powrót</button>
+            <div id="exercise-section" class="hidden">
+                <h3>Ćwiczenie:</h3>
+                <p id="exercise-text"></p>
+                <input type="text" id="user-answer" placeholder="Twoja odpowiedź">
+                <button onclick="checkAnswer()">Sprawdź</button>
+            </div>
+        </div>
+
+        <!-- Sekcja słownika -->
+        <div id="dictionary-section" class="section hidden">
+            <h2>Twój Słownik</h2>
+            <input type="text" id="new-word" placeholder="Dodaj nowe słowo">
+            <button onclick="addToDictionary()">Dodaj</button>
+            <ul id="dictionary-list"></ul>
+            <button onclick="showMainSection()">Powrót</button>
+        </div>
+
+    </body>
+</html>
