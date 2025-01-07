@@ -4,7 +4,7 @@ body {
   background-color: #f4f4f9;
   margin: 0;
   padding: 0;
-  text-align: center; /* Upraszcza wyrównanie */
+  /*text-align: center; /* Upraszcza wyrównanie */
 }
 
 /* Sekcje */
@@ -81,4 +81,43 @@ li {
 #progress {
   margin: 20px 0;
   font-weight: bold;
+}
+
+#flashcardContainer {
+  margin-top: 20px;
+  display: inline-block;
+  perspective: 1000px;
+}
+
+.flashcard {
+  width: 200px;
+  height: 200px;
+  background-color: #f0f0f0;
+  border: 2px solid #ddd;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  cursor: pointer;
+  transform-style: preserve-3d;
+  transition: transform 0.5s;
+}
+
+.flashcard:hover {
+  transform: rotateY(180deg);
+}
+
+.flashcard-front, .flashcard-back {
+  position: absolute;
+  backface-visibility: hidden;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 1.5em;
+}
+
+.flashcard-back {
+  transform: rotateY(180deg);
 }
