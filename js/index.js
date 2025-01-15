@@ -51,7 +51,10 @@ function loginUser() {
     const username = document.getElementById('login-username').value;
     const password = document.getElementById('login-password').value;
 
-    if (username && password) {
+    const storedUsername = localStorage.getItem('username');
+    const storedPassword = localStorage.getItem('password');
+
+    if (username === storedUsername && password === storedPassword) {
         alert(`Witaj, ${username}!`);
         showMainSection();
     } else {
@@ -61,15 +64,35 @@ function loginUser() {
 
 // Funkcja do rejestracji
 function registerUser() {
-    const username = document.getElementById('register-username').value;
+    const username = document.getElementById('register-username').value; 
     const password = document.getElementById('register-password').value;
+    const confirmPassword = document.getElementById('confirm-password').value;
+    const learningGoals = document.getElementById('learning-goals').value;
+    const termsAccepted = document.getElementById('terms-checkbox').checked;
 
-    if (username && password) {
-        alert(`Zarejestrowano pomyślnie! Teraz możesz się zalogować, ${username}.`);
-        showLoginSection();
-    } else {
+    if (!username || !password || !confirmPassword || !learningGoals) {
         alert('Proszę wypełnić wszystkie pola.');
+        return;
     }
+    if (password !== confirmPassword) {
+        alert('Hasła nie są zgodne! Spróbuj ponownie.');
+        return;
+    }
+
+    if (!termsAccepted) {
+        alert('Musisz zaakceptować warunki, aby się zarejestrować.');
+        return;
+    }
+    alert(`Gratulacje, ${username}! Twoje konto zostało utworzone. Teraz możesz rozpocząć naukę!`);
+
+    console.log('Rejestracja udana!');
+    console.log('Użytkownik:', username);
+    console.log('Cele nauki:', learningGoals);
+
+    localStorage.setItem('username', username); //zapisujemy danne uzytkownika
+    localStorage.setItem('password', password);
+
+    showMainSection();
 }
 
 // Funkcja do rozpoczęcia nauki

@@ -1,43 +1,71 @@
-/* Podstawowe style */
 body {
-  font-family: Arial, sans-serif;
-  background-color: #f4f4f9;
+  font-family: 'Arial', sans-serif;
   margin: 0;
   padding: 0;
-  /*text-align: center; /* Upraszcza wyrównanie */
+  background: linear-gradient(135deg, #f0f8ff, #e6e6fa); /*Tworzy gradientowe tło dla całej strony*/
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
 }
 
-/* Sekcje */
 .section {
+  background: #ffffff;
+  padding: 30px;
+  border-radius: 15px;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+  max-width: 500px;
+  text-align: center;
+  animation: fadeIn 1s ease-out; /* Animacja wyglądu */
+}
+
+.hidden {
   display: none;
-  padding: 20px;
-  max-width: 600px;
-  margin: 0 auto;
-  background-color: white;
-  border-radius: 8px;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
 
-/* Klasa do wyświetlania sekcji */
-.section:not(.hidden) {
-  display: block; /* Wyświetl sekcję, jeśli klasa hidden została usunięta */
+/* Animacja wyglądu*/
+@keyframes fadeIn {
+  from {
+      opacity: 0;
+      transform: translateY(-20px);
+  }
+  to {
+      opacity: 1;
+      transform: translateY(0);
+  }
 }
 
-/* Nagłówki */
+.welcome-image {
+  width: 100%;
+  max-width: 250px;
+  margin: 0 auto 20px;
+  display: block;
+  border-radius: 50%;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1); /* Cień obrazu */
+}
+
 h1 {
-  color: #333;
-  margin-bottom: 20px; /* Dodaj odstęp */
+  font-size: 24px;
+  color: #333333;
+  margin: 10px 0 20px;
+  font-weight: bold;
 }
 
+.welcome-text {
+  font-size: 16px;
+  color: #666666;
+  margin-bottom: 20px;
+  line-height: 1.5;
+}
 /* Przyciski */
 button {
-  padding: 10px;
-  margin: 10px 0;
-  background-color: #007bff;
-  color: white;
-  border: none;
-  border-radius: 3px;
+  padding: 12px 20px;
+  margin: 10px;
   font-size: 16px;
+  border: none;
+  border-radius: 25px;
+  background-color: #007bff;
+  color: #ffffff;
   cursor: pointer;
 }
 
@@ -54,14 +82,45 @@ input, select {
   border-radius: 3px;
 }
 
+/* Pola wejściowe */
+input[type="text"], input[type="password"], textarea {
+  width: 100%;
+  padding: 12px;
+  margin-bottom: 15px;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  font-size: 14px;
+  box-sizing: border-box;
+  background-color: #f9f9f9;
+}
+
+textarea {
+  resize: vertical;
+  min-height: 80px;
+}
+
+
+/* Checkbox */
+input[type="checkbox"] {
+  margin-right: 5px;
+}
+
+label {
+  display: inline-flex; 
+  align-items: center;
+  padding-left: 0;
+  white-space: nowrap;
+}
 /* Linki */
 a {
   color: #007bff;
   text-decoration: none;
+  font-size: 14px;
 }
 
 a:hover {
   text-decoration: underline;
+  color: #0056b3;
 }
 
 /* Prosta lista */

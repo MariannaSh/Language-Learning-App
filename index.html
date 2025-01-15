@@ -11,7 +11,9 @@
 
         <!-- Sekcja powitalna -->
         <div id="welcome-section" class="section">
+            <img src="/style/img/first.webp" alt="Language Learning Illustration" class="welcome-image">
             <h1>Witaj w aplikacji do nauki języków obcych!</h1>
+            <p class="welcome-text">Rozpocznij swoją przygodę z nauką języków już dziś!</p>
             <button onclick="showLoginSection()">Zaloguj się</button>
             <button onclick="showRegisterSection()">Zarejestruj się</button>
         </div>
@@ -34,6 +36,14 @@
             <input type="text" id="register-username" placeholder="Wybierz nazwę użytkownika"><br>
             <label for="register-password">Hasło:</label>
             <input type="password" id="register-password" placeholder="Wybierz hasło"><br>
+            <label for="confirm-password">Powtórz hasło:</label>
+            <input type="password" id="confirm-password" placeholder="Powtórz hasło"><br>
+            <label for="learning-goals">Dlaczego chcesz uczyć się języka?</label>
+            <textarea id="learning-goals" placeholder="Opisz swoje cele" rows="3"></textarea><br>
+            <label>
+                <input type="checkbox" id="terms-checkbox">
+                Akceptuję warunki 
+            </label><br>
             <button onclick="registerUser()">Zarejestruj</button>
             <p><a href="#" onclick="showLoginSection()">Masz już konto? Zaloguj się</a></p>
         </div>
@@ -43,18 +53,15 @@
         <!-- Sekcja główna -->
         <div id="main-section" class="section hidden">
             <h2>Co chcesz zrobić?</h2>
-            <button onclick="showLearningSection()">Rozpocznij naukę</button>
+            <button onclick="showFlashcardSection()">Rozpocznij naukę</button>
             <button onclick="showDictionarySection()">Twój słownik</button>
             <button onclick="logout()">Wyloguj się</button>
-            <div id="progress">
-                <h3>Twój postęp:</h3>
-                <p><span id="progress-percent">0</span>% ukończonych zadań</p>
-            </div>
+            
         </div>
 
         <!-- Sekcja nauki -->
         <div id="flashcard-section" class="section hidden">
-            <button onclick="showLearningSection()">Rozpocznij naukę</button>
+            <button onclick="showFlashcardSection()">Rozpocznij naukę</button>
             <button onclick="showDictionarySection()">Twój słownik</button>
             <button onclick="logout()">Wyloguj się</button>
             <h2>Flashcards</h2>
