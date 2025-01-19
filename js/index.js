@@ -41,6 +41,10 @@ function showFlashcardSection() {
     showSection('flashcard-section');
 }
 
+function showTestSection() {
+    showSection('test-section');
+}
+
 // Pokazuje sekcję ze słownikiem
 function showDictionarySection() {
     showSection('dictionary-section');
@@ -230,12 +234,14 @@ async function translateWord(word, selectedLanguage, targetLanguage) {
 function showList() {
     document.getElementById('wordListSection').style.display = 'block';
     document.getElementById('flashcardsSection').style.display = 'none';
+    document.getElementById('testSection').style.display = 'none';
 }
 
 // Funkcja do przełączania na zakładkę flashcards
 function showFlashcards() {
     document.getElementById('wordListSection').style.display = 'none';
     document.getElementById('flashcardsSection').style.display = 'block';
+    document.getElementById('testSecton').style.display = 'none';
     //showNextFlashcard();
 }
 
@@ -271,7 +277,157 @@ function showNextFlashcard() {
 function logout() {
     alert('Wylogowano.');
     document.getElementById("main-section").classList.add("hidden");
+    document.getElementById("test-section").classList.add("hidden");
     document.getElementById("dictionary-section").classList.add("hidden");
     document.getElementById("flashcard-section").classList.add("hidden"); // Ukryj sekcję główną
     document.getElementById("welcome-section").classList.remove("hidden"); // Pokaż sekcję powitalną
+}
+
+// Funkcja do pobierania słów i tłumaczeń z zakładki "Twój słownik"
+function getWordsFromDictionary() {
+    const wordList = document.getElementById('wordList'); // Zakładam, że lista ma ID "wordList"
+    const words = [];
+    const translations = [];
+
+    // Pobierz wszystkie elementy <li> z listy
+    const listItems = wordList.querySelectorAll('li');
+    listItems.forEach(item => {
+        const word = item.querySelector('.word')?.textContent.trim();
+        const translation = item.querySelector('.translation')?.textContent.trim();
+        if (word && translation) {
+            words.push(word);
+            translations.push(translation);
+        }
+    });
+
+    return { words, translations };
+}
+
+// Funkcja do generowania testu
+function generateTest() {
+    const testContainer = document.getElementById('testSection');
+    testContainer.innerHTML = ''; // Wyczyść poprzedni test
+
+    // Pobierz dane słów i tłumaczeń z zakładki "Twój słownik"
+    const { words, translations } = getWordsFromDictionary();
+
+    if (words.length === 0 || translations.length === 0) {
+        testContainer.innerHTML = '<p>Brak słów w słowniku. Dodaj słowa, aby stworzyć test.</p>';
+        return;
+    }
+
+    const questions = [];
+
+    // Tworzenie pytań typu "Prawda/Fałsz"
+    words.forEach((word, index) => {
+        const correctTranslation = translations[index];
+        const randomTranslation = translations[Math.floor(Math.random() * translations.length)];
+
+        // Losowo wybierz, czy odpowiedź będzie prawidłowa
+        const isCorrect = Math.random() > 0.5;
+        const displayedTranslation = isCorrect ? correctTranslation : randomTranslation;
+
+        questions.push({
+            type: 'trueFalse',
+            question: `Czy "${word}" oznacza "${displayedTranslation}"?`,
+            correctAnswer: isCorrect
+        });
+    });
+
+    // Tworzenie pytań otwartych
+    words.forEach((word, index) => {
+        const correctTranslation = translations[index];
+
+        questions.push({
+            type: 'open',
+            question: `Jakie jest tłumaczenie słowa "${word}"?`,
+            correctAnswer: correctTranslation
+        });
+    });
+
+    // Wyświetlanie pytań w HTML
+    questions.forEach((q, index) => {
+        const questionDiv = document.createElement('div');
+        questionDiv.className = 'question';
+
+        if (q.type === 'trueFalse') {
+            questionDiv.innerHTML = `
+                <p>${index + 1}. ${q.question}</p>
+                <label><input type="radio" name="q${index}" value="true"> Prawda</label>
+                <label><input type="radio" name="q${index}" value="false"> Fałsz</label>
+            `;
+        } else if (q.type === 'open') {
+            questionDiv.innerHTML = `
+                <p>${index + 1}. ${q.question}</p>
+                <input type="text" name="q${index}" />
+            `;
+        }
+
+        testContainer.appendChild(questionDiv);
+    });
+
+    // Dodanie przycisku "Sprawdź odpowiedzi"
+    const submitButton = document.createElement('button');
+    submitButton.textContent = 'Sprawdź odpowiedzi';
+    submitButton.addEventListener('click', () => checkTestAnswers(questions));
+    testContainer.appendChild(submitButton);
+}
+
+// Funkcja do sprawdzania odpowiedzi użytkownika
+function checkTestAnswers(questions) {
+    let correctCount = 0;
+
+    questions.forEach((q, index) => {
+        const userAnswer = document.querySelector(`[name="q${index}"]`);
+
+        // Sprawdzenie odpowiedzi dla pytań "Prawda/Fałsz"
+        if (q.type === 'trueFalse') {
+            const selectedValue = document.querySelector(`[name="q${index}"]:checked`);
+            if (selectedValue && String(q.correctAnswer) === selectedValue.value) {
+                correctCount++;
+                selectedValue.parentElement.style.color = 'green';
+            } else {
+                selectedValue.parentElement.style.color = 'red';
+            }
+        }
+
+        // Sprawdzenie odpowiedzi dla pytań otwartych
+        if (q.type === 'open') {
+            if (userAnswer && userAnswer.value.trim().toLowerCase() === q.correctAnswer.toLowerCase()) {
+                correctCount++;
+                userAnswer.style.color = 'green';
+            } else {
+                userAnswer.style.color = 'red';
+            }
+        }
+    });
+
+    // Wyświetlenie wyniku
+    alert(`Twój wynik: ${correctCount} z ${questions.length} poprawnych odpowiedzi.`);
+
+    // Dodanie przycisku "Wygeneruj nowy test"
+    const testContainer = document.getElementById('testSection');
+    const newTestButton = document.createElement('button');
+    newTestButton.textContent = 'Wygeneruj nowy test';
+    newTestButton.id = 'newTestButton'; // Ustaw ID dla przycisku
+    newTestButton.addEventListener('click', generateTest); // Podłącz ponowne generowanie testu
+
+    // Usuń poprzedni przycisk, jeśli istnieje
+    const existingButton = document.getElementById('newTestButton');
+    if (existingButton) {
+        existingButton.remove();
+    }
+
+    // Dodaj przycisk do kontenera testu
+    testContainer.appendChild(newTestButton);
+    
+}
+
+
+function showTest() {
+    document.getElementById('wordListSection').style.display = 'none';
+    document.getElementById('flashcardsSection').style.display = 'none';
+    document.getElementById('testSection').style.display = 'block';
+
+    
 }

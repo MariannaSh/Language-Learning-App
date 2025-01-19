@@ -144,29 +144,34 @@ li {
 
 #flashcardContainer {
   margin-top: 20px;
-  display: inline-block;
-  perspective: 1000px;
+  display: flex;
+  flex-direction: column; /* Ustawia fiszkę i przycisk w kolumnie */
+  align-items: center;
+  gap: 10px;
 }
 
 .flashcard {
-  width: 200px;
-  height: 200px;
-  background-color: #f0f0f0;
-  border: 2px solid #ddd;
+  width: 220px;
+  height: 220px;
+  background: linear-gradient(135deg, #f0f8ff, #e6e6fa); /* Gradient dopasowany do strony */
+  border-radius: 15px; /* Zaokrąglone rogi */
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2); /* Cień, aby karta się wyróżniała */
   display: flex;
   align-items: center;
   justify-content: center;
   text-align: center;
   cursor: pointer;
   transform-style: preserve-3d;
-  transition: transform 0.5s;
+  transition: transform 0.5s, box-shadow 0.3s;
 }
 
 .flashcard:hover {
   transform: rotateY(180deg);
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3); /* Większy cień przy najechaniu */
 }
 
-.flashcard-front, .flashcard-back {
+.flashcard-front,
+.flashcard-back {
   position: absolute;
   backface-visibility: hidden;
   width: 100%;
@@ -174,9 +179,42 @@ li {
   display: flex;
   justify-content: center;
   align-items: center;
-  font-size: 1.5em;
+  font-size: 1.4em; /* Trochę mniejsza czcionka, aby treść była bardziej czytelna */
+  color: #333; /* Przyjemny kolor tekstu */
+  padding: 15px; /* Dodanie przestrzeni wewnętrznej */
+  box-sizing: border-box;
+  border-radius: 15px; /* Dopasowanie do zaokrągleń kart */
+}
+
+.flashcard-front {
+  background: #ffffff; /* Jasne tło dla strony frontowej */
 }
 
 .flashcard-back {
+  background: #f9f9f9; /* Delikatniejsze tło dla strony tylnej */
   transform: rotateY(180deg);
+}
+
+/* Stylizacja tekstu wewnątrz kart */
+.flashcard p {
+  margin: 0;
+  font-weight: bold;
+  line-height: 1.4;
+  text-align: center;
+}
+
+#newTestButton {
+  padding: 10px 20px;
+  margin-top: 15px;
+  font-size: 14px;
+  background-color: #007bff;
+  color: #fff;
+  border: none;
+  border-radius: 15px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+#newTestButton:hover {
+  background-color: #0056b3;
 }
