@@ -1,6 +1,5 @@
 const apiKey = '6c70285b-82de-4439-83ac-8a80b0865f56:fx';
 
-// Pokazuje wybraną sekcję, ukrywając pozostałe
 function showSection(sectionId) {
     const sections = document.querySelectorAll('.section');
     sections.forEach(section => section.classList.add('hidden'));
@@ -10,26 +9,47 @@ function showSection(sectionId) {
     }
 }
 
-// Funkcja do wyświetlenia sekcji logowania
 function showLoginSection() {
-    document.getElementById("welcome-section").classList.add("hidden"); // Ukryj sekcję powitalną
-    document.getElementById("register-section").classList.add("hidden"); // Ukryj sekcję rejestracji
-    document.getElementById("login-section").classList.remove("hidden"); // Pokaż sekcję logowania
+    document.getElementById("welcome-section").classList.add("hidden"); 
+    document.getElementById("register-section").classList.add("hidden"); 
+    document.getElementById("login-section").classList.remove("hidden"); 
 }
 
-// Funkcja do wyświetlenia sekcji rejestracji
 function showRegisterSection() {
-    document.getElementById("welcome-section").classList.add("hidden"); // Ukryj sekcję powitalną
-    document.getElementById("login-section").classList.add("hidden"); // Ukryj sekcję logowania
-    document.getElementById("register-section").classList.remove("hidden"); // Pokaż sekcję rejestracji
+    document.getElementById("welcome-section").classList.add("hidden"); 
+    document.getElementById("login-section").classList.add("hidden"); 
+    document.getElementById("register-section").classList.remove("hidden"); 
 }
 
-// Funkcja do powrotu do sekcji powitalnej
 function showWelcomeSection() {
-    document.getElementById("login-section").classList.add("hidden"); // Ukryj sekcję logowania
-    document.getElementById("register-section").classList.add("hidden"); // Ukryj sekcję rejestracji
-    document.getElementById("welcome-section").classList.remove("hidden"); // Pokaż sekcję powitalną
+    document.getElementById("login-section").classList.add("hidden"); 
+    document.getElementById("register-section").classList.add("hidden"); 
+    document.getElementById("welcome-section").classList.remove("hidden"); 
 }
+
+function showTest() {
+    document.getElementById('wordListSection').style.display = 'none';
+    document.getElementById('flashcardsSection').style.display = 'none';
+    document.getElementById('userDashboard').style.display = 'none';
+    document.getElementById('testSection').style.display = 'block';
+}
+
+function showDashboard() {
+    document.getElementById('wordListSection').style.display = 'none';
+    document.getElementById('flashcardsSection').style.display = 'none';
+    document.getElementById('userDashboard').style.display = 'block';
+    document.getElementById('testSection').style.display = 'none';
+}
+
+function logout() {
+    alert('Wylogowano.');
+    document.getElementById("main-section").classList.add("hidden");
+    document.getElementById("test-section").classList.add("hidden");
+    document.getElementById("dictionary-section").classList.add("hidden");
+    document.getElementById("flashcard-section").classList.add("hidden");
+    document.getElementById("welcome-section").classList.remove("hidden");
+}
+
 
 // Pokazuje główną sekcję po zalogowaniu
 function showMainSection() {
@@ -101,37 +121,6 @@ function registerUser() {
     localStorage.setItem('password', password);
 
     showMainSection();
-}
-
-// Funkcja do rozpoczęcia nauki
-function startLearning() {
-    const language = document.getElementById('language').value;
-    const level = document.getElementById('level').value;
-
-    if (language && level) {
-        alert(`Rozpoczęcie nauki języka: ${language}, poziom: ${level}`);
-        const exerciseSection = document.getElementById('exercise-section');
-        exerciseSection.classList.remove('hidden');
-        loadExercise();
-    } else {
-        alert('Proszę wybrać język i poziom.');
-    }
-}
-
-// Ładowanie ćwiczenia (prosty przykład)
-function loadExercise() {
-    const exerciseText = document.getElementById('exercise-text');
-    exerciseText.textContent = 'Przetłumacz słowo "hello" na wybrany język.';
-}
-
-// Sprawdzanie odpowiedzi użytkownika
-function checkAnswer() {
-    const userAnswer = document.getElementById('user-answer').value.toLowerCase();
-    if (userAnswer === 'cześć') { 
-        alert('Dobra odpowiedź!');
-    } else {
-        alert('Spróbuj ponownie!');
-    }
 }
 
 let words = [];  // Przechowujemy dodane słowa
@@ -208,10 +197,8 @@ async function addWord() {
 function deleteWord(listItem, word, translation) {
     const wordList = document.getElementById('wordList');
 
-    // Usuwamy element z listy
     wordList.removeChild(listItem);
 
-    // Usuwamy dane z tablicy `words` i `translations`
     const wordIndex = words.indexOf(word);
     if (wordIndex > -1) {
         words.splice(wordIndex, 1);
@@ -323,17 +310,6 @@ function showNextFlashcard() {
 
     // Ustawienie indeksu na kolejną kartę (cyklicznie)
     currentFlashcardIndex = (currentFlashcardIndex + 1) % words.length;
-}
-
-function logout() {
-    alert('Wylogowano.');
-    document.getElementById("main-section").classList.add("hidden");
-    document.getElementById("test-section").classList.add("hidden");
-    document.getElementById("dictionary-section").classList.add("hidden");
-    document.getElementById("flashcard-section").classList.add("hidden");
-    document.getElementById("dashboard-section").classList.add("hidden");
-    document.getElementById("welcome-section").classList.remove("hidden");
-    
 }
 
 // Funkcja do pobierania słów i tłumaczeń z zakładki "Twój słownik"
@@ -504,25 +480,6 @@ function updateDashboard() {
         `;
     }
 }
-
-
-
-function showTest() {
-    document.getElementById('wordListSection').style.display = 'none';
-    document.getElementById('flashcardsSection').style.display = 'none';
-    document.getElementById('userDashboard').style.display = 'none';
-    document.getElementById('testSection').style.display = 'block';
-
-    
-}
-
-function showDashboard() {
-    document.getElementById('wordListSection').style.display = 'none';
-    document.getElementById('flashcardsSection').style.display = 'none';
-    document.getElementById('userDashboard').style.display = 'block';
-    document.getElementById('testSection').style.display = 'none';
-}
-
 
 window.addEventListener('DOMContentLoaded', () => {
     loadWords(); // Funkcja, która ładuje słowa z localStorage
