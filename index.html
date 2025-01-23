@@ -55,6 +55,7 @@
             <h2>Co chcesz zrobić?</h2>
             <button onclick="showFlashcardSection()">Rozpocznij naukę</button>
             <button onclick="showDictionarySection()">Twój słownik</button>
+            <button onclick="showDashboardSection()">Mój profil</button>
             <button onclick="showTestSection()">Test</button>
             <button onclick="logout()">Wyloguj się</button>
             
@@ -65,6 +66,7 @@
             <button onclick="showFlashcardSection()">Rozpocznij naukę</button>
             <button onclick="showDictionarySection()">Twój słownik</button>
             <button onclick="showTestSection()">Test</button>
+            <button onclick="showDashboardSection()">Mój profil</button>
             <button onclick="logout()">Wyloguj się</button>
             <h2>Flashcards</h2>
 
@@ -88,6 +90,7 @@
         <div id="test-section" class="section hidden">
             <button onclick="showFlashcardSection()">Rozpocznij naukę</button>
             <button onclick="showTesSectiont()">Test</button>
+            <button onclick="showDashboardSection()">Mój profil</button>
             <button onclick="showDictionarySection()">Twój słownik</button>
             <button onclick="logout()">Wyloguj się</button>
             <h2>Test</h2>
@@ -98,10 +101,26 @@
             </div>
         </div>
 
+        <div id="dashboard-section" class="section hidden">
+            <button onclick="showFlashcardSection()">Rozpocznij naukę</button>
+            <button onclick="showTestSection()">Test</button>
+            <button onclick="showDashboardSection()">Mój profil</button>
+            <button onclick="showDictionarySection()">Twój słownik</button>
+            <button onclick="logout()">Wyloguj się</button>
+            <div id="Dashboard">
+                <h1>Witaj!</h1>
+                <div id="userDashboard">
+                </div>
+                
+            </div>
+        </div>
+
+
         <!-- Sekcja słownika -->
         <div id="dictionary-section" class="section hidden">
             <button onclick="showFlashcardSection()">Rozpocznij naukę</button>
             <button onclick="showTestSection()">Test</button>
+            <button onclick="showDashboardSection()">Mój profil</button>
             <button onclick="showDictionarySection()">Twój słownik</button>
             <button onclick="logout()">Wyloguj się</button>
             <h2>Schowek</h2>

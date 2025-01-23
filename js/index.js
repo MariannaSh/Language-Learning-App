@@ -45,6 +45,10 @@ function showTestSection() {
     showSection('test-section');
 }
 
+function showDashboardSection() {
+    showSection('dashboard-section')
+}
+
 // Pokazuje sekcję ze słownikiem
 function showDictionarySection() {
     showSection('dictionary-section');
@@ -169,6 +173,9 @@ async function addWord() {
         words.push(wordToTranslate);
         translations.push(translation);
 
+        localStorage.setItem('words', JSON.stringify(words));
+        localStorage.setItem('translations', JSON.stringify(translations));
+
         const wordList = document.getElementById('wordList');
 
         // Sprawdzamy, czy wordList istnieje
@@ -230,22 +237,67 @@ async function translateWord(word, selectedLanguage, targetLanguage) {
     return data.translations[0].text;
 }
 
+function loadWords() {
+    const storedWords = JSON.parse(localStorage.getItem('words')) || [];
+    const storedTranslations = JSON.parse(localStorage.getItem('translations')) || [];
+
+    words = storedWords;
+    translations = storedTranslations;
+
+    const wordList = document.getElementById('wordList');
+    wordList.innerHTML = ''; // Wyczyść istniejącą listę
+
+    storedWords.forEach((word, index) => {
+        const translation = storedTranslations[index];
+        const listItem = document.createElement('li');
+        listItem.innerHTML = `
+            <span class="word">${word}</span> - <span class="translation">${translation}</span>
+            <button class="delete-btn">Usuń</button>
+        `;
+
+        listItem.querySelector('.delete-btn').addEventListener('click', () => {
+            deleteWord(listItem, word, translation);
+        });
+
+        wordList.appendChild(listItem);
+    });
+}
+
+function deleteWord(listItem, word, translation) {
+    const wordList = document.getElementById('wordList');
+    wordList.removeChild(listItem);
+
+    const wordIndex = words.indexOf(word);
+    if (wordIndex > -1) {
+        words.splice(wordIndex, 1);
+        translations.splice(wordIndex, 1);
+
+        // Zaktualizuj localStorage
+        localStorage.setItem('words', JSON.stringify(words));
+        localStorage.setItem('translations', JSON.stringify(translations));
+    }
+}
+
+
+
 // Funkcja do przełączania na zakładkę z listą słów
 function showList() {
     document.getElementById('wordListSection').style.display = 'block';
     document.getElementById('flashcardsSection').style.display = 'none';
     document.getElementById('testSection').style.display = 'none';
+    document.getElementById('userDashboard').style.display = 'none';
 }
 
 // Funkcja do przełączania na zakładkę flashcards
 function showFlashcards() {
     document.getElementById('wordListSection').style.display = 'none';
     document.getElementById('flashcardsSection').style.display = 'block';
-    document.getElementById('testSecton').style.display = 'none';
-    //showNextFlashcard();
+    document.getElementById('testSection').style.display = 'none';
+    document.getElementById('userDashboard').style.display = 'none';
+    
 }
 
-// Funkcja do wyświetlania następnej flashcard
+//wyświetlanie następnej flashcard
 function showNextFlashcard() {
     if (words.length === 0) {
         alert("Brak słów do nauki.");
@@ -273,23 +325,24 @@ function showNextFlashcard() {
     currentFlashcardIndex = (currentFlashcardIndex + 1) % words.length;
 }
 
-// Funkcja do wylogowania
 function logout() {
     alert('Wylogowano.');
     document.getElementById("main-section").classList.add("hidden");
     document.getElementById("test-section").classList.add("hidden");
     document.getElementById("dictionary-section").classList.add("hidden");
-    document.getElementById("flashcard-section").classList.add("hidden"); // Ukryj sekcję główną
-    document.getElementById("welcome-section").classList.remove("hidden"); // Pokaż sekcję powitalną
+    document.getElementById("flashcard-section").classList.add("hidden");
+    document.getElementById("dashboard-section").classList.add("hidden");
+    document.getElementById("welcome-section").classList.remove("hidden");
+    
 }
 
 // Funkcja do pobierania słów i tłumaczeń z zakładki "Twój słownik"
 function getWordsFromDictionary() {
-    const wordList = document.getElementById('wordList'); // Zakładam, że lista ma ID "wordList"
+    const wordList = document.getElementById('wordList');
     const words = [];
     const translations = [];
 
-    // Pobierz wszystkie elementy <li> z listy
+    // Pobierz wszystkie elementy z listy
     const listItems = wordList.querySelectorAll('li');
     listItems.forEach(item => {
         const word = item.querySelector('.word')?.textContent.trim();
@@ -303,7 +356,6 @@ function getWordsFromDictionary() {
     return { words, translations };
 }
 
-// Funkcja do generowania testu
 function generateTest() {
     const testContainer = document.getElementById('testSection');
     testContainer.innerHTML = ''; // Wyczyść poprzedni test
@@ -366,68 +418,114 @@ function generateTest() {
         testContainer.appendChild(questionDiv);
     });
 
-    // Dodanie przycisku "Sprawdź odpowiedzi"
+    //przycisk "Sprawdź odpowiedzi"
     const submitButton = document.createElement('button');
     submitButton.textContent = 'Sprawdź odpowiedzi';
     submitButton.addEventListener('click', () => checkTestAnswers(questions));
     testContainer.appendChild(submitButton);
 }
 
-// Funkcja do sprawdzania odpowiedzi użytkownika
 function checkTestAnswers(questions) {
-    let correctCount = 0;
+    let correctCount = 0; // Liczba poprawnych odpowiedzi
+    let totalQuestions = questions.length;
 
     questions.forEach((q, index) => {
         const userAnswer = document.querySelector(`[name="q${index}"]`);
 
-        // Sprawdzenie odpowiedzi dla pytań "Prawda/Fałsz"
         if (q.type === 'trueFalse') {
             const selectedValue = document.querySelector(`[name="q${index}"]:checked`);
             if (selectedValue && String(q.correctAnswer) === selectedValue.value) {
                 correctCount++;
                 selectedValue.parentElement.style.color = 'green';
-            } else {
+            } else if (selectedValue) {
                 selectedValue.parentElement.style.color = 'red';
             }
         }
 
-        // Sprawdzenie odpowiedzi dla pytań otwartych
         if (q.type === 'open') {
             if (userAnswer && userAnswer.value.trim().toLowerCase() === q.correctAnswer.toLowerCase()) {
                 correctCount++;
                 userAnswer.style.color = 'green';
-            } else {
+            } else if (userAnswer) {
                 userAnswer.style.color = 'red';
             }
         }
     });
 
-    // Wyświetlenie wyniku
-    alert(`Twój wynik: ${correctCount} z ${questions.length} poprawnych odpowiedzi.`);
+    // Aktualizowanie statystyk użytkownika
+    updateUserStats(totalQuestions, correctCount);
 
-    // Dodanie przycisku "Wygeneruj nowy test"
+    // Wyświetlenie wyniku nawet jeśli test jest pusty
+    alert(`Twój wynik: ${correctCount} z ${totalQuestions} poprawnych odpowiedzi.`);
+
     const testContainer = document.getElementById('testSection');
     const newTestButton = document.createElement('button');
     newTestButton.textContent = 'Wygeneruj nowy test';
-    newTestButton.id = 'newTestButton'; // Ustaw ID dla przycisku
-    newTestButton.addEventListener('click', generateTest); // Podłącz ponowne generowanie testu
+    newTestButton.id = 'newTestButton';
+    newTestButton.addEventListener('click', generateTest);
 
-    // Usuń poprzedni przycisk, jeśli istnieje
     const existingButton = document.getElementById('newTestButton');
     if (existingButton) {
         existingButton.remove();
     }
 
-    // Dodaj przycisk do kontenera testu
     testContainer.appendChild(newTestButton);
-    
 }
+
+function updateUserStats(totalQuestions, correctAnswers) {
+    const incorrectAnswers = totalQuestions - correctAnswers;
+
+    // Pobierz aktualne statystyki z localStorage
+    const completedTests = parseInt(localStorage.getItem('completedTests')) || 0;
+    const totalCorrect = parseInt(localStorage.getItem('totalCorrect')) || 0;
+    const totalIncorrect = parseInt(localStorage.getItem('totalIncorrect')) || 0;
+
+    // Zaktualizuj statystyki
+    localStorage.setItem('completedTests', completedTests + 1);
+    localStorage.setItem('totalCorrect', totalCorrect + correctAnswers);
+    localStorage.setItem('totalIncorrect', totalIncorrect + incorrectAnswers);
+
+    // Zaktualizuj wyświetlanie na pulpicie użytkownika (jeśli istnieje)
+    updateDashboard();
+}
+
+function updateDashboard() {
+    const completedTests = parseInt(localStorage.getItem('completedTests')) || 0;
+    const totalCorrect = parseInt(localStorage.getItem('totalCorrect')) || 0;
+    const totalIncorrect = parseInt(localStorage.getItem('totalIncorrect')) || 0;
+
+    const dashboard = document.getElementById('userDashboard');
+    if (dashboard) {
+        dashboard.innerHTML = `
+            <h2>Pulpit użytkownika</h2>
+            <p>Wykonane testy: ${completedTests}</p>
+            <p>Poprawne odpowiedzi: ${totalCorrect}</p>
+            <p>Błędne odpowiedzi: ${totalIncorrect}</p>
+        `;
+    }
+}
+
 
 
 function showTest() {
     document.getElementById('wordListSection').style.display = 'none';
     document.getElementById('flashcardsSection').style.display = 'none';
+    document.getElementById('userDashboard').style.display = 'none';
     document.getElementById('testSection').style.display = 'block';
 
     
 }
+
+function showDashboard() {
+    document.getElementById('wordListSection').style.display = 'none';
+    document.getElementById('flashcardsSection').style.display = 'none';
+    document.getElementById('userDashboard').style.display = 'block';
+    document.getElementById('testSection').style.display = 'none';
+}
+
+
+window.addEventListener('DOMContentLoaded', () => {
+    loadWords(); // Funkcja, która ładuje słowa z localStorage
+    updateDashboard(); // Funkcja do załadowania pulpitu użytkownika
+});
+
