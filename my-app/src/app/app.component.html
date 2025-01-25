@@ -1,0 +1,121 @@
+<!-- Sekcja powitalna -->
+<div id="welcome-section" class="section">
+    <img src="/my-app/src/assets/img/new.png" alt="Language Learning Illustration" class="welcome-image">
+    <h1>Witaj w aplikacji do nauki języków obcych!</h1>
+    <p class="welcome-text">Rozpocznij swoją przygodę z nauką języków już dziś!</p>
+    <button (click)="showLoginSection()">Zaloguj się</button>
+    <button (click)="showRegisterSection()">Zarejestruj się</button>
+</div>
+
+
+<!-- Sekcja logowania -->
+<div id="login-section" class="section hidden">
+    <h2>Logowanie</h2>
+    <label for="login-username">Użytkownik:</label>
+    <input type="text" id="login-username" placeholder="Wpisz nazwę użytkownika"><br>
+    <label for="login-password">Hasło:</label>
+    <input type="password" id="login-password" placeholder="Wpisz hasło"><br>
+    <button (click)="loginUser()">Zaloguj</button>
+    <p><a href="#" (click)="showRegisterSection()">Nie masz konta? Zarejestruj się</a></p>
+</div>
+
+<!-- Sekcja rejestracji -->
+<div id="register-section" class="section hidden">
+    <h2>Rejestracja</h2>
+    <label for="register-username">Nazwa użytkownika:</label>
+    <input type="text" id="register-username" placeholder="Wybierz nazwę użytkownika"><br>
+    <label for="register-password">Hasło:</label>
+    <input type="password" id="register-password" placeholder="Wybierz hasło"><br>
+    <label for="confirm-password">Powtórz hasło:</label>
+    <input type="password" id="confirm-password" placeholder="Powtórz hasło"><br>
+    <label for="learning-goals">Dlaczego chcesz uczyć się języka?</label>
+    <textarea id="learning-goals" placeholder="Opisz swoje cele" rows="3"></textarea><br>
+    <label>
+        <input type="checkbox" id="terms-checkbox">
+        Akceptuję warunki
+    </label><br>
+    <button (click)="registerUser()">Zarejestruj</button>
+    <p><a href="#" (click)="showLoginSection()">Masz już konto? Zaloguj się</a></p>
+</div>
+
+<!-- Sekcja główna -->
+<div id="main-section" class="section hidden">
+    <button (click)="showFlashcardSection()">Rozpocznij naukę</button>
+    <button (click)="showTestSection()">Test</button>
+    <button (click)="showDictionarySection()">Twój słownik</button>
+    <button (click)="logout()">Wyloguj się</button>
+    <div id="Dashboard">
+        <h1>Witaj!</h1>
+        <div id="userDashboard">
+          <h2>Pulpit użytkownika</h2>
+          <p>Wykonane testy: {{ completedTests }}</p>
+          <p>Poprawne odpowiedzi: {{ totalCorrect }}</p>
+          <p>Błędne odpowiedzi: {{ totalIncorrect }}</p>
+        </div>
+      </div>
+      
+</div>
+
+<!-- Остальные секции добавьте аналогично -->
+<div id="flashcard-section" class="section hidden">
+    <button (click)="showFlashcardSection()">Rozpocznij naukę</button>
+    <button (click)="showDictionarySection()">Twój słownik</button>
+    <button (click)="showTestSection()">Test</button>
+    <button (click)="showMainSection()">Mój profil</button>
+    <button (click)="logout()">Wyloguj się</button>
+    <h2>Flashcards</h2>
+
+     <!-- Opcje wyboru języka na przedniej stronie flashcard -->
+     <div>
+        <label><input type="radio" name="flashcardSide" value="en" checked> Angielski na przodzie</label>
+        <label><input type="radio" name="flashcardSide" value="pl"> Polski na przodzie</label>
+    </div>
+    
+    <div id="flashcardContainer">
+        <div id="flashcard" class="flashcard">
+            <div class="flashcard-front">Kliknij, aby zobaczyć tłumaczenie</div>
+            <div class="flashcard-back">Tłumaczenie</div>
+        </div>
+        <button (click)="showNextFlashcard()">Następna</button>
+    </div>
+
+</div>
+
+<div id="test-section" class="section hidden">
+    <button (click)="showFlashcardSection()">Rozpocznij naukę</button>
+    <button (click)="showTestSection()">Test</button>
+    <button (click)="showMainSection()">Mój profil</button>
+    <button (click)="showDictionarySection()">Twój słownik</button>
+    <button (click)="logout()">Wyloguj się</button>
+    <h2>Test</h2>
+    <h3>Rozpocznij test wiedzy</h3>
+    <div id="testSection">
+        <button (click)="generateTest()">Rozpocznij test</button>
+        <button id="newTestButton">Wygeneruj nowy test</button>
+    </div>
+</div>
+
+
+<!-- Sekcja słownika -->
+<div id="dictionary-section" class="section hidden">
+    <button (click)="showFlashcardSection()">Rozpocznij naukę</button>
+    <button (click)="showTestSection()">Test</button>
+    <button (click)="showMainSection()">Mój profil</button>
+    <button (click)="showDictionarySection()">Twój słownik</button>
+    <button (click)="logout()">Wyloguj się</button>
+    <h2>Schowek</h2>
+    <h3>Dodaj słowo do listy i uzyskaj tłumaczenie</h3>
+    <div id="wordListSection">
+        <input type="text" id="wordInput" placeholder="Wpisz słowo..." />
+
+        <!-- Wybór języka -->
+        <select id="languageSelect">
+            <option value="en">Angielski na Polski</option>
+            <option value="pl">Polski na Angielski</option>
+        </select>
+
+        <button (click)="addWord()">Dodaj słowo</button>
+        <ul id="wordList"></ul>
+    </div>
+
+</div>
