@@ -8,32 +8,53 @@ import { LocalStorageService } from './services/local-storage.service';
 })
 
 export class AppComponent implements OnInit {
+  currentUser: string | null = null;
   apiKey: string = '6c70285b-82de-4439-83ac-8a80b0865f56:fx';
   words: string[] = [];
   translations: string[] = [];
   currentFlashcardIndex: number = 0;
 
   constructor(private localStorageService: LocalStorageService) {}
-
+  
   ngOnInit(): void {
-    this.loadWords();
-    this.updateDashboard();
+    if (typeof window !== 'undefined') {
+      this.loadUserSession();
+      if (this.currentUser) {
+        this.loadWords();
+        this.updateDashboard();
+      }
+    }
   }
 
-  loadWords(): void {
-    const storedWords = this.localStorageService.getItem('words');
-    const storedTranslations = this.localStorageService.getItem('translations');
-    
-    if (storedWords && storedTranslations) {
-      this.words = JSON.parse(storedWords);
-      this.translations = JSON.parse(storedTranslations);
+  loadUserSession(): void {
+    if (typeof window !== 'undefined' && typeof localStorage !== 'undefined') {
+      this.currentUser = localStorage.getItem('currentUser');
     }
   }
 
   saveWords(): void {
-    if (typeof window !== 'undefined') {
-      this.localStorageService.setItem('words', JSON.stringify(this.words));
-      this.localStorageService.setItem('translations', JSON.stringify(this.translations));
+    if (typeof window !== 'undefined' && typeof localStorage !== 'undefined' && this.currentUser) {
+      localStorage.setItem(`words_${this.currentUser}`, JSON.stringify(this.words));
+      localStorage.setItem(`translations_${this.currentUser}`, JSON.stringify(this.translations));
+    }
+  }
+  
+  loadWords(): void {
+    if (this.currentUser) {
+      const storedWords = this.localStorageService.getItem(
+        `words_${this.currentUser}`
+      );
+      const storedTranslations = this.localStorageService.getItem(
+        `translations_${this.currentUser}`
+      );
+
+      if (storedWords && storedTranslations) {
+        this.words = JSON.parse(storedWords);
+        this.translations = JSON.parse(storedTranslations);
+      } else {
+        this.words = [];
+        this.translations = [];
+      }
     }
   }
 
@@ -99,36 +120,39 @@ export class AppComponent implements OnInit {
 
   logout(): void {
     alert('Wylogowano.');
+
     this.toggleSectionVisibility("welcome-section", [
-      "main-section", "test-section", "dictionary-section", 
+      "main-section", "test-section", "dictionary-section",
       "flashcard-section", "userDashboard", "wordListSection", "flashcardsSection"
     ]);
-}
-
+  
+    window.location.reload();
+  }
 
   loginUser(): void {
     const username = (document.getElementById('login-username') as HTMLInputElement).value;
     const password = (document.getElementById('login-password') as HTMLInputElement).value;
-
-    const storedUsername = localStorage.getItem('username');
-    const storedPassword = localStorage.getItem('password');
-
-    if (username === storedUsername && password === storedPassword) {
+  
+    const users = JSON.parse(localStorage.getItem('users') || '{}');
+  
+    if (users[username] && users[username].password === password) {
+      this.currentUser = username;
+      localStorage.setItem('currentUser', username); 
       alert(`Witaj, ${username}!`);
-      this.showMainSection();
+      this.loadUserData(); 
+      this.updateDashboard(); 
+      this.showMainSection(); 
     } else {
       alert('Proszę wprowadzić poprawne dane logowania.');
     }
   }
-
   registerUser(): void {
     const username = (document.getElementById('register-username') as HTMLInputElement).value;
     const password = (document.getElementById('register-password') as HTMLInputElement).value;
     const confirmPassword = (document.getElementById('confirm-password') as HTMLInputElement).value;
-    const learningGoals = (document.getElementById('learning-goals') as HTMLInputElement).value;
     const termsAccepted = (document.getElementById('terms-checkbox') as HTMLInputElement).checked;
-
-    if (!username || !password || !confirmPassword || !learningGoals) {
+  
+    if (!username || !password || !confirmPassword) {
       alert('Proszę wypełnić wszystkie pola.');
       return;
     }
@@ -136,17 +160,49 @@ export class AppComponent implements OnInit {
       alert('Hasła nie są zgodne! Spróbuj ponownie.');
       return;
     }
-
     if (!termsAccepted) {
       alert('Musisz zaakceptować warunki, aby się zarejestrować.');
       return;
     }
-
-    alert(`Gratulacje, ${username}! Twoje konto zostało utworzone. Teraz możesz rozpocząć naukę!`);
-    localStorage.setItem('username', username);
-    localStorage.setItem('password', password);
+  
+    let users = JSON.parse(localStorage.getItem('users') || '{}');
+  
+    if (users[username]) {
+      alert('Nazwa użytkownika już istnieje. Wybierz inną.');
+      return;
+    }
+  
+    users[username] = {
+      password: password,
+      completedTests: 0,
+      totalCorrect: 0,
+      totalIncorrect: 0
+    };
+  
+    localStorage.setItem('users', JSON.stringify(users));
+  
+    this.currentUser = username;
+    localStorage.setItem('currentUser', username);
+  
+    this.loadUserData();
+    this.updateDashboard();
+  
+    alert(`Gratulacje, ${username}! Twoje konto zostało utworzone.`);
     this.showMainSection();
   }
+  
+  loadUserData(): void {
+    if (this.currentUser) {
+      const users = JSON.parse(localStorage.getItem('users') || '{}');
+      const userData = users[this.currentUser];
+      if (userData) {
+        this.completedTests = userData.completedTests;
+        this.totalCorrect = userData.totalCorrect;
+        this.totalIncorrect = userData.totalIncorrect;
+      }
+    }
+  }
+  
 
   addWord(): void {
     const wordInput = document.getElementById('wordInput') as HTMLInputElement;
@@ -283,12 +339,10 @@ export class AppComponent implements OnInit {
 
     const questions: any[] = [];
 
-    // Tworzenie pytań typu "Prawda/Fałsz"
     words.forEach((word, index) => {
       const correctTranslation = translations[index];
       const randomTranslation = translations[Math.floor(Math.random() * translations.length)];
 
-      // Losowo wybierz, czy odpowiedź będzie prawidłowa
       const isCorrect = Math.random() > 0.5;
       const displayedTranslation = isCorrect ? correctTranslation : randomTranslation;
 
@@ -299,7 +353,6 @@ export class AppComponent implements OnInit {
       });
     });
 
-    // Tworzenie pytań otwartych
     words.forEach((word, index) => {
       const correctTranslation = translations[index];
 
@@ -310,7 +363,6 @@ export class AppComponent implements OnInit {
       });
     });
 
-    // Wyświetlanie pytań w HTML
     questions.forEach((q, index) => {
       const questionDiv = document.createElement('div');
       questionDiv.className = 'question';
@@ -331,7 +383,6 @@ export class AppComponent implements OnInit {
       testContainer!.appendChild(questionDiv);
     });
 
-    //przycisk "Sprawdź odpowiedzi"
     const submitButton = document.createElement('button');
     submitButton.textContent = 'Sprawdź odpowiedzi';
     submitButton.addEventListener('click', () => this.checkTestAnswers(questions));
@@ -339,7 +390,7 @@ export class AppComponent implements OnInit {
   }
 
   checkTestAnswers(questions: any[]): void {
-    let correctCount = 0; // Liczba poprawnych odpowiedzi
+    let correctCount = 0; 
     const totalQuestions = questions.length;
   
     questions.forEach((q, index) => {
@@ -371,10 +422,8 @@ export class AppComponent implements OnInit {
       }
     });
   
-    // Aktualizowanie statystyk użytkownika
     this.updateUserStats(totalQuestions, correctCount);
-  
-    // Wyświetlenie wyniku nawet jeśli test jest pusty
+
     alert(`Twój wynik: ${correctCount} z ${totalQuestions} poprawnych odpowiedzi.`);
   
     const testContainer = document.getElementById('testSection');
@@ -391,42 +440,42 @@ export class AppComponent implements OnInit {
     testContainer!.appendChild(newTestButton);
   }  
 
-  updateUserStats(totalQuestions: number, correctAnswers: number) {
-    const incorrectAnswers = totalQuestions - correctAnswers;
+  updateUserStats(totalQuestions: number, correctAnswers: number): void {
+    if (this.currentUser) {
+      let users = JSON.parse(localStorage.getItem('users') || '{}');
+      const incorrectAnswers = totalQuestions - correctAnswers;
+  
+      if (users[this.currentUser]) {
 
-    if (typeof window !== 'undefined' && typeof localStorage !== 'undefined') {
+        users[this.currentUser].completedTests += 1;
+        users[this.currentUser].totalCorrect += correctAnswers;
+        users[this.currentUser].totalIncorrect += incorrectAnswers;
+  
+        localStorage.setItem('users', JSON.stringify(users));
 
-        const completedTests = parseInt(localStorage.getItem('completedTests') || '0');
-        const totalCorrect = parseInt(localStorage.getItem('totalCorrect') || '0');
-        const totalIncorrect = parseInt(localStorage.getItem('totalIncorrect') || '0');
-
-    
-        localStorage.setItem('completedTests', (completedTests + 1).toString());
-        localStorage.setItem('totalCorrect', (totalCorrect + correctAnswers).toString());
-        localStorage.setItem('totalIncorrect', (totalIncorrect + incorrectAnswers).toString());
+        this.completedTests = users[this.currentUser].completedTests;
+        this.totalCorrect = users[this.currentUser].totalCorrect;
+        this.totalIncorrect = users[this.currentUser].totalIncorrect;
 
         this.updateDashboard();
+      }
     }
-  }
+  }  
 
   completedTests: number = 0;
   totalCorrect: number = 0;
   totalIncorrect: number = 0;
 
   updateDashboard(): void {
-
-    if (typeof window !== 'undefined' && window.localStorage) {
-      const completedTests = parseInt(localStorage.getItem('completedTests') || '0');
-      const totalCorrect = parseInt(localStorage.getItem('totalCorrect') || '0');
-      const totalIncorrect = parseInt(localStorage.getItem('totalIncorrect') || '0');
-
-      this.completedTests = completedTests;
-      this.totalCorrect = totalCorrect;
-      this.totalIncorrect = totalIncorrect;
-    } else {
-      console.log('localStorage is unavailable');
+    const dashboardElement = document.getElementById('dashboard');
+    if (dashboardElement) {
+      dashboardElement.innerHTML = `
+        <p>Wykonane testy: ${this.completedTests}</p>
+        <p>Poprawne odpowiedzi: ${this.totalCorrect}</p>
+        <p>Błędne odpowiedzi: ${this.totalIncorrect}</p>
+      `;
     }
-  }
+  }  
 
 }
 
