@@ -39,7 +39,6 @@ export class AppComponent implements OnInit {
     }
   }
   
-  
   loadWords(): void {
     if (this.currentUser) {
       const storedWords = this.localStorageService.getItem(`words_${this.currentUser}`);
@@ -53,7 +52,7 @@ export class AppComponent implements OnInit {
         this.translations = [];
       }
     }
-  }
+  }  
   
 
   showSection(sectionId: string): void {
@@ -118,6 +117,11 @@ export class AppComponent implements OnInit {
 
   logout(): void {
     alert('Wylogowano.');
+    localStorage.removeItem('currentUser');
+
+    this.words = [];
+    this.translations = [];
+    this.currentUser = null;
 
     this.toggleSectionVisibility("welcome-section", [
       "main-section", "test-section", "dictionary-section",
@@ -137,6 +141,7 @@ export class AppComponent implements OnInit {
       this.currentUser = username;
       localStorage.setItem('currentUser', username); 
       alert(`Witaj, ${username}!`);
+
       this.loadUserData(); 
       this.loadWords();
       this.updateDashboard(); 
@@ -219,16 +224,16 @@ export class AppComponent implements OnInit {
     this.translateWord(word, selectedLanguage, targetLanguage).then(translation => {
       this.words.push(word);
       this.translations.push(translation);
-  
-      this.saveWords();
 
+      this.saveWords();
+  
       wordInput.value = '';
       this.updateWordList();
     }).catch(error => {
       console.error("Błąd при tłumaczeniu:", error);
       alert("Wystąpił błąd podczas tłumaczenia słowa.");
     });
-  }
+  }  
   
   async translateWord(word: string, selectedLanguage: string, targetLanguage: string): Promise<string> {
     const url = `https://api-free.deepl.com/v2/translate?auth_key=${this.apiKey}&text=${word}&source_lang=${selectedLanguage}&target_lang=${targetLanguage}`;
@@ -266,12 +271,12 @@ export class AppComponent implements OnInit {
       if (wordIndex > -1) {
         this.words.splice(wordIndex, 1);
         this.translations.splice(wordIndex, 1);
-        localStorage.setItem('words', JSON.stringify(this.words));
-        localStorage.setItem('translations', JSON.stringify(this.translations));
+  
+        this.saveWords();
       }
     }
   }
-
+  
   showList(): void {
     this.setVisibility('block', ['wordListSection']);
     this.setVisibility('none', ['flashcardsSection', 'testSection', 'userDashboard']);
