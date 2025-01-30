@@ -34,20 +34,17 @@ export class AppComponent implements OnInit {
 
   saveWords(): void {
     if (typeof window !== 'undefined' && typeof localStorage !== 'undefined' && this.currentUser) {
-      localStorage.setItem(`words_${this.currentUser}`, JSON.stringify(this.words));
-      localStorage.setItem(`translations_${this.currentUser}`, JSON.stringify(this.translations));
+      this.localStorageService.setItem(`words_${this.currentUser}`, JSON.stringify(this.words));
+      this.localStorageService.setItem(`translations_${this.currentUser}`, JSON.stringify(this.translations));
     }
   }
   
+  
   loadWords(): void {
     if (this.currentUser) {
-      const storedWords = this.localStorageService.getItem(
-        `words_${this.currentUser}`
-      );
-      const storedTranslations = this.localStorageService.getItem(
-        `translations_${this.currentUser}`
-      );
-
+      const storedWords = this.localStorageService.getItem(`words_${this.currentUser}`);
+      const storedTranslations = this.localStorageService.getItem(`translations_${this.currentUser}`);
+  
       if (storedWords && storedTranslations) {
         this.words = JSON.parse(storedWords);
         this.translations = JSON.parse(storedTranslations);
@@ -57,6 +54,7 @@ export class AppComponent implements OnInit {
       }
     }
   }
+  
 
   showSection(sectionId: string): void {
     const sections = document.querySelectorAll('.section');
@@ -140,12 +138,14 @@ export class AppComponent implements OnInit {
       localStorage.setItem('currentUser', username); 
       alert(`Witaj, ${username}!`);
       this.loadUserData(); 
+      this.loadWords();
       this.updateDashboard(); 
       this.showMainSection(); 
     } else {
       alert('Proszę wprowadzić poprawne dane logowania.');
     }
   }
+
   registerUser(): void {
     const username = (document.getElementById('register-username') as HTMLInputElement).value;
     const password = (document.getElementById('register-password') as HTMLInputElement).value;
@@ -203,7 +203,6 @@ export class AppComponent implements OnInit {
     }
   }
   
-
   addWord(): void {
     const wordInput = document.getElementById('wordInput') as HTMLInputElement;
     const word = wordInput.value.trim();
@@ -216,23 +215,21 @@ export class AppComponent implements OnInit {
     }
   
     const targetLanguage = (selectedLanguage === 'en') ? 'pl' : 'en';
+  
     this.translateWord(word, selectedLanguage, targetLanguage).then(translation => {
       this.words.push(word);
       this.translations.push(translation);
   
-      if (typeof localStorage !== 'undefined') {
-        localStorage.setItem('words', JSON.stringify(this.words));
-        localStorage.setItem('translations', JSON.stringify(this.translations));
-      }
-  
+      this.saveWords();
+
       wordInput.value = '';
       this.updateWordList();
     }).catch(error => {
       console.error("Błąd при tłumaczeniu:", error);
       alert("Wystąpił błąd podczas tłumaczenia słowa.");
     });
-  }  
-
+  }
+  
   async translateWord(word: string, selectedLanguage: string, targetLanguage: string): Promise<string> {
     const url = `https://api-free.deepl.com/v2/translate?auth_key=${this.apiKey}&text=${word}&source_lang=${selectedLanguage}&target_lang=${targetLanguage}`;
     const response = await fetch(url);
@@ -242,7 +239,6 @@ export class AppComponent implements OnInit {
     }
     return data.translations[0].text;
   }
-
 
   updateWordList(): void {
     const wordList = document.getElementById('wordList')!;
