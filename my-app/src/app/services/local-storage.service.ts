@@ -11,7 +11,7 @@ export class LocalStorageService {
     if (isPlatformBrowser(this.platformId)) {
       return localStorage.getItem(key);
     }
-    return null; // или вернуть какое-то дефолтное значение
+    return null; 
   }
 
   setItem(key: string, value: string): void {
