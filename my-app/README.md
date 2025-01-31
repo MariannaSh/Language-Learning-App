@@ -1,59 +1,115 @@
-# MyApp
+# Language Learning App
 
-This project was generated using [Angular CLI](https://github.com/angular/angular-cli) version 19.1.4.
+A simple and interactive language learning application with two main versions:
 
-## Development server
+1. **Main Branch:** Built using HTML, CSS, and  vanilla JavaScript.'
+2. **Master Branch:** A more advanced implementation using Angular for enhanced features and better maintainability.
 
-To start a local development server, run:
+## Table of Contents
+
+- [Language Learning App](#language-learning-app)
+  - [Table of Contents](#table-of-contents)
+  - [Project Overview](#project-overview)
+  - [Features](#features)
+  - [Screenshots](#screenshots)
+    - [Welcome Screen](#welcome-screen)
+    - [Vocabulary Management](#vocabulary-management)
+    - [Flashcards](#flashcards)
+    - [Quiz/Test Section](#quiztest-section)
+  - [Technologies Used](#technologies-used)
+  - [Installation](#installation)
+    - [For Main Branch (HTML + JS Version)](#for-main-branch-html--js-version)
+    - [For Master Branch (Angular Version)](#for-master-branch-angular-version)
+
+---
+
+## Project Overview
+
+This project is designed to help users learn a new language through:
+
+- Adding vocabulary words to a personal dictionary
+- Interactive flashcards
+- Vocabulary-based quizzes/tests
+
+The application keeps track of individual user progress and custom vocabulary using local storage.
+
+## Features
+
+- **User Registration & Login:** Each user has their own progress and dictionary.
+- **Vocabulary Management:** Add, edit, and delete words in your personal dictionary.
+- **Flashcards:** Learn words with interactive flashcards.
+- **Tests:** Test your vocabulary knowledge with dynamically generated quizzes.
+- **Progress Tracking:** Monitor your completed tests and correct/incorrect answers.
+
+## Screenshots
+
+### Welcome Screen
+
+![Welcome Screen](./src/assets/screenshots/welcome.png)
+
+### Vocabulary Management
+
+![Vocabulary Management](./src/assets/screenshots/vocabulary.png)
+
+### Flashcards
+
+![Flashcards](./src/assets/screenshots/flashcards.png)
+
+### Quiz/Test Section
+![Test](./src/assets/screenshots/test.png)
+
+
+## Technologies Used
+
+- **Main Branch:**
+
+  - HTML
+  - CSS
+  - Vanilla JavaScript
+
+- **Master Branch:**
+
+  - Angular
+  - TypeScript
+  - SCSS (for enhanced styles)
+
+## Installation
+
+### For Main Branch (HTML + JS Version)
 
 ```bash
+# Clone the repository
+git clone https://github.com/MariannaSh/Language-Learning-App.git
+
+# Navigate to the main branch
+cd language-learning-app
+
+git checkout main
+
+# Open index.html in the browser
+```
+
+### For Master Branch (Angular Version)
+
+```bash
+# Clone the repository
+git clone https://github.com/MariannaSh/Language-Learning-App.git
+
+# Navigate to the project directory
+cd language-learning-app
+
+git checkout master
+
+# Install dependencies
+npm install
+
+# Run the application
 ng serve
+
+# Open http://localhost:4200/ in the browser
 ```
 
-Once the server is running, open your browser and navigate to `http://localhost:4200/`. The application will automatically reload whenever you modify any of the source files.
+---
 
-## Code scaffolding
+Thank you for checking out this project! We hope it helps you on your language-learning journey 💝
 
-Angular CLI includes powerful code scaffolding tools. To generate a new component, run:
-
-```bash
-ng generate component component-name
-```
-
-For a complete list of available schematics (such as `components`, `directives`, or `pipes`), run:
-
-```bash
-ng generate --help
-```
-
-## Building
-
-To build the project run:
-
-```bash
-ng build
-```
-
-This will compile your project and store the build artifacts in the `dist/` directory. By default, the production build optimizes your application for performance and speed.
-
-## Running unit tests
-
-To execute unit tests with the [Karma](https://karma-runner.github.io) test runner, use the following command:
-
-```bash
-ng test
-```
-
-## Running end-to-end tests
-
-For end-to-end (e2e) testing, run:
-
-```bash
-ng e2e
-```
-
-Angular CLI does not come with an end-to-end testing framework by default. You can choose one that suits your needs.
-
-## Additional Resources
-
-For more information on using the Angular CLI, including detailed command references, visit the [Angular CLI Overview and Command Reference](https://angular.dev/tools/cli) page.

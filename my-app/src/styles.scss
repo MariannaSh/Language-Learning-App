@@ -1,178 +1,188 @@
+$primary-color: #007bff;
+$hover-color: #0056b3;
+$background-gradient: linear-gradient(135deg, #f0f8ff, #e6e6fa);
+$input-background: #f9f9f9;
+$box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+$border-radius: 15px;
+
+@mixin button-style {
+  padding: 12px 20px;
+  margin: 10px;
+  font-size: 16px;
+  border: none;
+  border-radius: 25px;
+  background-color: $primary-color;
+  color: #ffffff;
+  cursor: pointer;
+  transition: background-color 0.3s;
+
+  &:hover {
+    background-color: $hover-color;
+  }
+}
+
+// Global styles
 body {
-    font-family: 'Arial', sans-serif;
-    margin: 0;
-    padding: 0;
-    background: linear-gradient(135deg, #f0f8ff, #e6e6fa); /*Tworzy gradientowe tło dla całej strony*/
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 100vh;
-    overflow-y: auto;
-  }
-  
-  .section {
-    background: #ffffff;
-    padding: 30px;
-    border-radius: 15px;
-    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
-    max-width: 500px;
-    max-height: 80vh; 
-    overflow-y: auto; 
-    text-align: center;
-    animation: fadeIn 1s ease-out;
-  }
-  
-  .hidden {
+  font-family: 'Arial', sans-serif;
+  margin: 0;
+  padding: 0;
+  background: $background-gradient;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  overflow-y: auto;
+}
+
+.section {
+  background: #ffffff;
+  padding: 30px;
+  border-radius: $border-radius;
+  box-shadow: $box-shadow;
+  max-width: 500px;
+  max-height: 80vh;
+  overflow-y: auto;
+  text-align: center;
+  animation: fadeIn 1s ease-out;
+
+  &.hidden {
     display: none;
   }
-  
-  /* Animacja wyglądu*/
-  @keyframes fadeIn {
-    from {
-        opacity: 0;
-        transform: translateY(-20px);
-    }
-    to {
-        opacity: 1;
-        transform: translateY(0);
-    }
+}
+
+// Animation for fade-in effect
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(-20px);
   }
-  
-  .welcome-image {
-    width: 100%;
-    max-width: 250px;
-    margin: 0 auto 20px;
-    display: block;
-    border-radius: 50%;
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1); /* Cień obrazu */
+  to {
+    opacity: 1;
+    transform: translateY(0);
   }
-  
-  h1 {
-    font-size: 24px;
-    color: #333333;
-    margin: 10px 0 20px;
-    font-weight: bold;
-  }
-  
-  .welcome-text {
-    font-size: 16px;
-    color: #666666;
-    margin-bottom: 20px;
-    line-height: 1.5;
-  }
-  /* Przyciski */
-  button {
-    padding: 12px 20px;
-    margin: 10px;
-    font-size: 16px;
-    border: none;
-    border-radius: 25px;
-    background-color: #007bff;
-    color: #ffffff;
-    cursor: pointer;
-  }
-  
-  button:hover {
-    background-color: #0056b3; /* Przyciemnij przy najechaniu */
-  }
-  
-  /* Formularze */
-  input, select {
-    width: 90%; /* Prostsze niż 100% z ramkami */
-    padding: 10px;
-    margin: 10px auto;
-    border: 1px solid #ccc;
-    border-radius: 3px;
-  }
-  
-  /* Pola wejściowe */
-  input[type="text"], input[type="password"], textarea {
-    width: 100%;
-    padding: 12px;
-    margin-bottom: 15px;
-    border: 1px solid #ccc;
-    border-radius: 6px;
-    font-size: 14px;
-    box-sizing: border-box;
-    background-color: #f9f9f9;
-  }
-  
-  textarea {
-    resize: vertical;
-    min-height: 80px;
-  }
-  
-  
-  /* Checkbox */
-  input[type="checkbox"] {
-    margin-right: 5px;
-  }
-  
-  label {
-    display: inline-flex; 
-    align-items: center;
-    padding-left: 0;
-    white-space: nowrap;
-  }
-  /* Linki */
-  a {
-    color: #007bff;
-    text-decoration: none;
-    font-size: 14px;
-  }
-  
-  a:hover {
+}
+
+
+.welcome-image {
+  width: 100%;
+  max-width: 250px;
+  margin: 0 auto 20px;
+  display: block;
+  border-radius: 50%;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+h1 {
+  font-size: 24px;
+  color: #333333;
+  margin: 10px 0 20px;
+  font-weight: bold;
+}
+
+.welcome-text {
+  font-size: 16px;
+  color: #666666;
+  margin-bottom: 20px;
+  line-height: 1.5;
+}
+
+button {
+  @include button-style;
+}
+
+input,
+select {
+  width: 90%;
+  padding: 10px;
+  margin: 10px auto;
+  border: 1px solid #ccc;
+  border-radius: 3px;
+}
+
+input[type="text"],
+input[type="password"],
+textarea {
+  width: 100%;
+  padding: 12px;
+  margin-bottom: 15px;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  font-size: 14px;
+  box-sizing: border-box;
+  background-color: $input-background;
+}
+
+textarea {
+  resize: vertical;
+  min-height: 80px;
+}
+
+input[type="checkbox"] {
+  margin-right: 5px;
+}
+
+label {
+  display: inline-flex;
+  align-items: center;
+  padding-left: 0;
+  white-space: nowrap;
+}
+
+a {
+  color: $primary-color;
+  text-decoration: none;
+  font-size: 14px;
+
+  &:hover {
     text-decoration: underline;
-    color: #0056b3;
+    color: $hover-color;
   }
-  
-  /* Prosta lista */
-  ul {
-    list-style-type: none;
-    padding: 0;
-  }
-  
-  li {
-    background-color: #f9f9f9;
-    padding: 10px;
-    margin: 5px 0;
-    border-radius: 3px;
-  }
-  
-  /* Postęp */
-  #progress {
-    margin: 20px 0;
-    font-weight: bold;
-  }
-  
-  #flashcardContainer {
-    margin-top: 20px;
-    display: flex;
-    flex-direction: column; /* Ustawia fiszkę i przycisk w kolumnie */
-    align-items: center;
-    gap: 10px;
-  }
-  
-  .flashcard {
-    width: 220px;
-    height: 220px;
-    background: linear-gradient(135deg, #f0f8ff, #e6e6fa); /* Gradient dopasowany do strony */
-    border-radius: 15px; /* Zaokrąglone rogi */
-    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2); /* Cień, aby karta się wyróżniała */
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    text-align: center;
-    cursor: pointer;
-    transform-style: preserve-3d;
-    transition: transform 0.5s, box-shadow 0.3s;
-  }
-  
-  .flashcard:hover {
+}
+
+ul {
+  list-style-type: none;
+  padding: 0;
+}
+
+li {
+  background-color: $input-background;
+  padding: 10px;
+  margin: 5px 0;
+  border-radius: 3px;
+}
+
+#progress {
+  margin: 20px 0;
+  font-weight: bold;
+}
+
+#flashcardContainer {
+  margin-top: 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+}
+
+.flashcard {
+  width: 220px;
+  height: 220px;
+  background: $background-gradient;
+  border-radius: $border-radius;
+  box-shadow: $box-shadow;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  cursor: pointer;
+  transform-style: preserve-3d;
+  transition: transform 0.5s, box-shadow 0.3s;
+
+  &:hover {
     transform: rotateY(180deg);
-    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3); /* Większy cień przy najechaniu */
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3);
   }
-  
+
   .flashcard-front,
   .flashcard-back {
     position: absolute;
@@ -182,45 +192,42 @@ body {
     display: flex;
     justify-content: center;
     align-items: center;
-    font-size: 1.4em; /* Trochę mniejsza czcionka, aby treść była bardziej czytelna */
-    color: #333; /* Przyjemny kolor tekstu */
-    padding: 15px; /* Dodanie przestrzeni wewnętrznej */
+    font-size: 1.4em;
+    color: #333;
+    padding: 15px;
     box-sizing: border-box;
-    border-radius: 15px; /* Dopasowanie do zaokrągleń kart */
+    border-radius: $border-radius;
   }
-  
+
   .flashcard-front {
-    background: #ffffff; /* Jasne tło dla strony frontowej */
+    background: #ffffff;
   }
-  
+
   .flashcard-back {
-    background: #f9f9f9; /* Delikatniejsze tło dla strony tylnej */
+    background: $input-background;
     transform: rotateY(180deg);
   }
-  
-  /* Stylizacja tekstu wewnątrz kart */
-  .flashcard p {
+
+  p {
     margin: 0;
     font-weight: bold;
     line-height: 1.4;
     text-align: center;
   }
-  
-  #newTestButton {
-    padding: 10px 20px;
-    margin-top: 15px;
-    font-size: 14px;
-    background-color: #007bff;
-    color: #fff;
-    border: none;
-    border-radius: 15px;
-    cursor: pointer;
-    transition: background-color 0.3s;
+}
+
+#newTestButton {
+  padding: 10px 20px;
+  margin-top: 15px;
+  font-size: 14px;
+  background-color: $primary-color;
+  color: #fff;
+  border: none;
+  border-radius: $border-radius;
+  cursor: pointer;
+  transition: background-color 0.3s;
+
+  &:hover {
+    background-color: $hover-color;
   }
-  
-  #newTestButton:hover {
-    background-color: #0056b3;
-  }
-  
-  
-  
+}
