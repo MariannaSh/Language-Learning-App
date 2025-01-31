@@ -49,14 +49,14 @@ The application keeps track of individual user progress and custom vocabulary us
 
 ### Vocabulary Management
 
-![Vocabulary Management]((my-app/src/assets/screenshots/vocabulary.png)
+![Vocabulary Management](my-app/src/assets/screenshots/vocabulary.png)
 
 ### Flashcards
 
-![Flashcards]((my-app/src/assets/screenshots/flashcards.png)
+![Flashcards](my-app/src/assets/screenshots/flashcards.png)
 
 ### Quiz/Test Section
-![Test]((my-app/src/assets/screenshots/test.png)
+![Test](my-app/src/assets/screenshots/test.png)
 
 
 ## Technologies Used
