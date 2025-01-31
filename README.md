@@ -45,18 +45,18 @@ The application keeps track of individual user progress and custom vocabulary us
 
 ### Welcome Screen
 
-![Welcome Screen](my-app//src/assets/screenshots/welcome.png)
+![Welcome Screen](my-app/src/assets/screenshots/welcome.png)
 
 ### Vocabulary Management
 
-![Vocabulary Management](./src/assets/screenshots/vocabulary.png)
+![Vocabulary Management]((my-app/src/assets/screenshots/vocabulary.png)
 
 ### Flashcards
 
-![Flashcards](./src/assets/screenshots/flashcards.png)
+![Flashcards]((my-app/src/assets/screenshots/flashcards.png)
 
 ### Quiz/Test Section
-![Test](./src/assets/screenshots/test.png)
+![Test]((my-app/src/assets/screenshots/test.png)
 
 
 ## Technologies Used
