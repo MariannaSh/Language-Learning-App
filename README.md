@@ -73,6 +73,9 @@ The application keeps track of individual user progress and custom vocabulary us
   - TypeScript
   - SCSS (for enhanced styles)
 
+- **APIs:**
+  - **[DeepL API](https://www.deepl.com/docs-api)**: Used for dynamic word translations, allowing users to input vocabulary and receive real-time translations.
+
 ## Installation
 
 ### For Main Branch (HTML + JS Version)
