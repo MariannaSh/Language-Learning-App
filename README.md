@@ -74,7 +74,7 @@ The application keeps track of individual user progress and custom vocabulary us
   - SCSS (for enhanced styles)
 
 - **APIs:**
-  - **[DeepL API](https://www.deepl.com/docs-api)**: Used for dynamic word translations, allowing users to input vocabulary and receive real-time translations.
+  - **[DeepL API](https://www.deepl.com/docs-api)** : Used for dynamic word translations, allowing users to input vocabulary and receive real-time translations.
 
 ## Installation
 
