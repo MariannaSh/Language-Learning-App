@@ -99,7 +99,7 @@ git checkout main
 git clone https://github.com/MariannaSh/Language-Learning-App.git
 
 # Navigate to the project directory
-cd language-learning-app
+cd my-app
 
 git checkout master
 
